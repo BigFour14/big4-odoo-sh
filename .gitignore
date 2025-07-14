@@ -1,2 +1,5 @@
-custom/addons/*
-custom/addons/*
+*.pyc
+__pycache__/
+node_modules/
+.env
+.DS_Store
