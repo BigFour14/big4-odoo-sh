@@ -1,0 +1,65 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Dashboard View -->
+        <record id="view_driver_dashboard" model="ir.ui.view">
+            <field name="name">driver.dashboard</field>
+            <field name="model">res.users</field>
+            <field name="arch" type="xml">
+                <form string="Driver Dashboard">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Driver Dashboard</h1>
+                        </div>
+                        <group>
+                            <group string="Driver Information">
+                                <field name="name" readonly="1"/>
+                                <field name="login" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="My Trips">
+                                <field name="driver_trip_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="vehicle_id"/>
+                                        <field name="scheduled_datetime"/>
+                                        <field name="status"/>
+                                        <field name="duration"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="My Documents">
+                                <field name="driver_document_ids" readonly="1">
+                                    <tree decoration-danger="is_expired" decoration-warning="days_to_expiry &lt; 30">
+                                        <field name="name"/>
+                                        <field name="document_type"/>
+                                        <field name="expiration_date"/>
+                                        <field name="days_to_expiry"/>
+                                        <field name="is_expired" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Dashboard Action -->
+        <record id="action_driver_dashboard" model="ir.actions.act_window">
+            <field name="name">Driver Dashboard</field>
+            <field name="res_model">res.users</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_driver_dashboard"/>
+            <field name="target">current</field>
+            <field name="context">{'default_id': uid}</field>
+        </record>
+
+        <!-- Dashboard Menu Item -->
+        <menuitem id="menu_driver_dashboard" name="Dashboard" parent="menu_driver_portal" action="action_driver_dashboard" sequence="5"/>
+    </data>
+</odoo>
+

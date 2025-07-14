@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal Dashboard Template -->
+    <template id="portal_cashbox_dashboard" name="Cashbox Portal Dashboard">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Cashbox Portal</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Cashbox Operations</h2>
+                        <p class="lead">Manage your cashbox transactions and operations</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <!-- Vendor Payments Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-credit-card fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Vendor Payments</h5>
+                                <p class="card-text">Pay vendor bills from the cashbox</p>
+                                <small class="text-muted"><t t-esc="pending_payments"/> pending</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/payments" class="btn btn-primary btn-block">Manage Payments</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Customer Collections Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-money fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">Customer Collections</h5>
+                                <p class="card-text">Collect customer invoice payments</p>
+                                <small class="text-muted"><t t-esc="pending_collections"/> pending</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/collections" class="btn btn-success btn-block">Manage Collections</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cashier Expenses Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-receipt fa-3x text-warning mb-3"></i>
+                                <h5 class="card-title">Cashier Expenses</h5>
+                                <p class="card-text">Record expenses paid from cashbox</p>
+                                <small class="text-muted"><t t-esc="pending_expenses"/> pending</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/expenses" class="btn btn-warning btn-block">Manage Expenses</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Uninvoiced Revenue Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-plus-circle fa-3x text-info mb-3"></i>
+                                <h5 class="card-title">Uninvoiced Revenue</h5>
+                                <p class="card-text">Record other cash revenue</p>
+                                <small class="text-muted"><t t-esc="pending_uninvoiced"/> pending</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/uninvoiced" class="btn btn-info btn-block">Manage Revenue</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cashbox Transfers Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-exchange fa-3x text-secondary mb-3"></i>
+                                <h5 class="card-title">Cashbox Transfers</h5>
+                                <p class="card-text">Transfer money between cashboxes</p>
+                                <small class="text-muted"><t t-esc="pending_transfers"/> pending</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/transfers" class="btn btn-secondary btn-block">Manage Transfers</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cashbox Report Card -->
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fa fa-chart-bar fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">Cashbox Report</h5>
+                                <p class="card-text">View detailed cashbox balances and reports</p>
+                                <small class="text-muted">Real-time data</small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/cashbox/report" class="btn btn-success btn-block">View Report</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Payments Template -->
+    <template id="portal_cashbox_payments" name="Cashbox Payments">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Vendor Payments</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Vendor Payments</h2>
+                            <a href="/cashbox/payment/new" class="btn btn-primary">New Payment</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Unpaid Bills Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4>Unpaid Vendor Bills</h4>
+                        <t t-if="unpaid_bills">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Bill Number</th>
+                                            <th>Vendor</th>
+                                            <th>Date</th>
+                                            <th>Due Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="unpaid_bills" t-as="bill">
+                                            <tr>
+                                                <td><t t-esc="bill.name"/></td>
+                                                <td><t t-esc="bill.partner_id.name"/></td>
+                                                <td><t t-esc="bill.invoice_date"/></td>
+                                                <td><t t-esc="bill.invoice_date_due"/></td>
+                                                <td><t t-esc="bill.amount_total"/> <t t-esc="bill.currency_id.name"/></td>
+                                                <td>
+                                                    <span t-if="bill.payment_state == 'not_paid'" class="badge badge-danger">Not Paid</span>
+                                                    <span t-if="bill.payment_state == 'partial'" class="badge badge-warning">Partial</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/payment/new?bill_id={{bill.id}}" class="btn btn-sm btn-primary">Pay</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                <p>No unpaid vendor bills found.</p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Existing Payments Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <h4>My Payments</h4>
+                        <t t-if="payments">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Vendor</th>
+                                            <th>Bill</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="payments" t-as="payment">
+                                            <tr>
+                                                <td><t t-esc="payment.name"/></td>
+                                                <td><t t-esc="payment.vendor_id.name"/></td>
+                                                <td><t t-esc="payment.bill_id.name"/></td>
+                                                <td><t t-esc="payment.amount"/> <t t-esc="payment.currency_id.name"/></td>
+                                                <td><t t-esc="payment.date"/></td>
+                                                <td>
+                                                    <span t-if="payment.state == 'draft'" class="badge badge-secondary">Draft</span>
+                                                    <span t-if="payment.state == 'submitted'" class="badge badge-warning">Submitted</span>
+                                                    <span t-if="payment.state == 'paid'" class="badge badge-success">Paid</span>
+                                                    <span t-if="payment.state == 'rejected'" class="badge badge-danger">Rejected</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/payment/{{payment.id}}" class="btn btn-sm btn-info">View</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                <p>No payments found. <a href="/cashbox/payment/new">Create your first payment</a></p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Payment Form Template -->
+    <template id="portal_cashbox_payment_form" name="Payment Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Payment</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Create New Payment</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="/cashbox/payment/create" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="bill_id">Vendor Bill *</label>
+                                        <select name="bill_id" id="bill_id" class="form-control" required="required" onchange="updateBillDetails()">
+                                            <option value="">Select a bill to pay</option>
+                                            <t t-foreach="unpaid_bills" t-as="bill">
+                                                <option t-att-value="bill.id" 
+                                                        t-att-data-vendor="bill.partner_id.id"
+                                                        t-att-data-vendor-name="bill.partner_id.name"
+                                                        t-att-data-amount="bill.amount_residual"
+                                                        t-att-selected="'selected' if selected_bill and selected_bill.id == bill.id else None">
+                                                    <t t-esc="bill.name"/> - <t t-esc="bill.partner_id.name"/> - <t t-esc="bill.amount_residual"/> <t t-esc="bill.currency_id.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <input type="hidden" name="vendor_id" id="vendor_id"/>
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Payment Amount *</label>
+                                        <input type="number" name="amount" id="amount" class="form-control" step="0.01" required="required"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="date">Payment Date *</label>
+                                        <input type="date" name="date" id="date" class="form-control" required="required" t-att-value="datetime.date.today()"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cashbox_id">Cashbox *</label>
+                                        <select name="cashbox_id" id="cashbox_id" class="form-control" required="required">
+                                            <option value="">Select cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Create Payment</button>
+                                    <a href="/cashbox/payments" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                function updateBillDetails() {
+                    var billSelect = document.getElementById('bill_id');
+                    var selectedOption = billSelect.options[billSelect.selectedIndex];
+                    
+                    if (selectedOption.value) {
+                        document.getElementById('vendor_id').value = selectedOption.getAttribute('data-vendor');
+                        document.getElementById('amount').value = selectedOption.getAttribute('data-amount');
+                    } else {
+                        document.getElementById('vendor_id').value = '';
+                        document.getElementById('amount').value = '';
+                    }
+                }
+                
+                // Initialize if bill is pre-selected
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateBillDetails();
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- Collections Template -->
+    <template id="portal_cashbox_collections" name="Cashbox Collections">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Customer Collections</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Customer Collections</h2>
+                            <a href="/cashbox/collection/new" class="btn btn-primary">New Collection</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Unpaid Invoices Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4>Unpaid Customer Invoices</h4>
+                        <t t-if="unpaid_invoices">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice Number</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Due Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="unpaid_invoices" t-as="invoice">
+                                            <tr>
+                                                <td><t t-esc="invoice.name"/></td>
+                                                <td><t t-esc="invoice.partner_id.name"/></td>
+                                                <td><t t-esc="invoice.invoice_date"/></td>
+                                                <td><t t-esc="invoice.invoice_date_due"/></td>
+                                                <td><t t-esc="invoice.amount_total"/> <t t-esc="invoice.currency_id.name"/></td>
+                                                <td>
+                                                    <span t-if="invoice.payment_state == 'not_paid'" class="badge badge-danger">Not Paid</span>
+                                                    <span t-if="invoice.payment_state == 'partial'" class="badge badge-warning">Partial</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/collection/new?invoice_id={{invoice.id}}" class="btn btn-sm btn-success">Collect</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                <p>No unpaid customer invoices found.</p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Existing Collections Section -->
+                <div class="row">
+                    <div class="col-12">
+                        <h4>My Collections</h4>
+                        <t t-if="collections">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Customer</th>
+                                            <th>Invoice</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="collections" t-as="collection">
+                                            <tr>
+                                                <td><t t-esc="collection.name"/></td>
+                                                <td><t t-esc="collection.customer_id.name"/></td>
+                                                <td><t t-esc="collection.invoice_id.name"/></td>
+                                                <td><t t-esc="collection.amount"/> <t t-esc="collection.currency_id.name"/></td>
+                                                <td><t t-esc="collection.date"/></td>
+                                                <td>
+                                                    <span t-if="collection.state == 'draft'" class="badge badge-secondary">Draft</span>
+                                                    <span t-if="collection.state == 'submitted'" class="badge badge-warning">Submitted</span>
+                                                    <span t-if="collection.state == 'collected'" class="badge badge-success">Collected</span>
+                                                    <span t-if="collection.state == 'rejected'" class="badge badge-danger">Rejected</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/collection/{{collection.id}}" class="btn btn-sm btn-info">View</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                <p>No collections found. <a href="/cashbox/collection/new">Create your first collection</a></p>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Collection Form Template -->
+    <template id="portal_cashbox_collection_form" name="Collection Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Collection</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Create New Collection</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="/cashbox/collection/create" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="invoice_id">Customer Invoice *</label>
+                                        <select name="invoice_id" id="invoice_id" class="form-control" required="required" onchange="updateInvoiceDetails()">
+                                            <option value="">Select an invoice to collect</option>
+                                            <t t-foreach="unpaid_invoices" t-as="invoice">
+                                                <option t-att-value="invoice.id" 
+                                                        t-att-data-customer="invoice.partner_id.id"
+                                                        t-att-data-customer-name="invoice.partner_id.name"
+                                                        t-att-data-amount="invoice.amount_residual"
+                                                        t-att-selected="'selected' if selected_invoice and selected_invoice.id == invoice.id else None">
+                                                    <t t-esc="invoice.name"/> - <t t-esc="invoice.partner_id.name"/> - <t t-esc="invoice.amount_residual"/> <t t-esc="invoice.currency_id.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <input type="hidden" name="customer_id" id="customer_id"/>
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Collection Amount *</label>
+                                        <input type="number" name="amount" id="amount" class="form-control" step="0.01" required="required"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="date">Collection Date *</label>
+                                        <input type="date" name="date" id="date" class="form-control" required="required" t-att-value="datetime.date.today()"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cashbox_id">Cashbox *</label>
+                                        <select name="cashbox_id" id="cashbox_id" class="form-control" required="required">
+                                            <option value="">Select cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success">Create Collection</button>
+                                    <a href="/cashbox/collections" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                function updateInvoiceDetails() {
+                    var invoiceSelect = document.getElementById('invoice_id');
+                    var selectedOption = invoiceSelect.options[invoiceSelect.selectedIndex];
+                    
+                    if (selectedOption.value) {
+                        document.getElementById('customer_id').value = selectedOption.getAttribute('data-customer');
+                        document.getElementById('amount').value = selectedOption.getAttribute('data-amount');
+                    } else {
+                        document.getElementById('customer_id').value = '';
+                        document.getElementById('amount').value = '';
+                    }
+                }
+                
+                // Initialize if invoice is pre-selected
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateInvoiceDetails();
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- Expenses Template -->
+    <template id="portal_cashbox_expenses" name="Cashbox Expenses">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Cashier Expenses</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Cashier Expenses</h2>
+                            <a href="/cashbox/expense/new" class="btn btn-primary">New Expense</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <t t-if="expenses">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Expense Name</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Cashbox</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="expenses" t-as="expense">
+                                            <tr>
+                                                <td><t t-esc="expense.name"/></td>
+                                                <td><t t-esc="expense.expense_name"/></td>
+                                                <td><t t-esc="expense.amount"/> <t t-esc="expense.currency_id.name"/></td>
+                                                <td><t t-esc="expense.date"/></td>
+                                                <td><t t-esc="expense.cashbox_id.name"/></td>
+                                                <td>
+                                                    <span t-if="expense.state == 'draft'" class="badge badge-secondary">Draft</span>
+                                                    <span t-if="expense.state == 'submitted'" class="badge badge-warning">Submitted</span>
+                                                    <span t-if="expense.state == 'approved'" class="badge badge-success">Approved</span>
+                                                    <span t-if="expense.state == 'rejected'" class="badge badge-danger">Rejected</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/expense/{{expense.id}}" class="btn btn-sm btn-info">View</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <h4>Create your first expense</h4>
+                                <p>Record expenses paid from the cashbox</p>
+                                <a href="/cashbox/expense/new" class="btn btn-primary">New Expense</a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Expense Form Template -->
+    <template id="portal_cashbox_expense_form" name="Expense Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Expense</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Create New Expense</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="/cashbox/expense/create" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="expense_name">Expense Name *</label>
+                                        <input type="text" name="expense_name" id="expense_name" class="form-control" required="required" placeholder="e.g., Office supplies, Transportation"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Expense Amount *</label>
+                                        <input type="number" name="amount" id="amount" class="form-control" step="0.01" required="required"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="date">Expense Date *</label>
+                                        <input type="date" name="date" id="date" class="form-control" required="required" t-att-value="datetime.date.today()"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cashbox_id">Cashbox *</label>
+                                        <select name="cashbox_id" id="cashbox_id" class="form-control" required="required">
+                                            <option value="">Select cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="expense_account_id">Expense Account *</label>
+                                        <select name="expense_account_id" id="expense_account_id" class="form-control" required="required">
+                                            <option value="">Select expense account</option>
+                                            <t t-foreach="expense_accounts" t-as="account">
+                                                <option t-att-value="account.id"><t t-esc="account.code"/> - <t t-esc="account.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="receipt_image">Receipt Image (Optional)</label>
+                                        <input type="file" name="receipt_image" id="receipt_image" class="form-control" accept="image/*"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Create Expense</button>
+                                    <a href="/cashbox/expenses" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Uninvoiced Template -->
+    <template id="portal_cashbox_uninvoiced" name="Cashbox Uninvoiced Revenue">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Uninvoiced Revenue</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Uninvoiced Revenue</h2>
+                            <a href="/cashbox/uninvoiced/new" class="btn btn-primary">New Revenue</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <t t-if="uninvoiced">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Revenue Name</th>
+                                            <th>Customer</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="uninvoiced" t-as="revenue">
+                                            <tr>
+                                                <td><t t-esc="revenue.name"/></td>
+                                                <td><t t-esc="revenue.revenue_name"/></td>
+                                                <td><t t-esc="revenue.customer_id.name if revenue.customer_id else 'N/A'"/></td>
+                                                <td><t t-esc="revenue.amount"/> <t t-esc="revenue.currency_id.name"/></td>
+                                                <td><t t-esc="revenue.date"/></td>
+                                                <td>
+                                                    <span t-if="revenue.state == 'draft'" class="badge badge-secondary">Draft</span>
+                                                    <span t-if="revenue.state == 'submitted'" class="badge badge-warning">Submitted</span>
+                                                    <span t-if="revenue.state == 'approved'" class="badge badge-success">Approved</span>
+                                                    <span t-if="revenue.state == 'rejected'" class="badge badge-danger">Rejected</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/uninvoiced/{{revenue.id}}" class="btn btn-sm btn-info">View</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <h4>Create your first uninvoiced revenue</h4>
+                                <p>Record cash revenue that doesn't require an invoice</p>
+                                <a href="/cashbox/uninvoiced/new" class="btn btn-primary">New Revenue</a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Uninvoiced Form Template -->
+    <template id="portal_cashbox_uninvoiced_form" name="Uninvoiced Revenue Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Uninvoiced Revenue</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Create New Uninvoiced Revenue</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="/cashbox/uninvoiced/create" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="revenue_name">Revenue Name *</label>
+                                        <input type="text" name="revenue_name" id="revenue_name" class="form-control" required="required" placeholder="e.g., Service fee, Consultation"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="customer_id">Customer (Optional)</label>
+                                        <select name="customer_id" id="customer_id" class="form-control">
+                                            <option value="">Select customer (optional)</option>
+                                            <t t-foreach="customers" t-as="customer">
+                                                <option t-att-value="customer.id"><t t-esc="customer.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Revenue Amount *</label>
+                                        <input type="number" name="amount" id="amount" class="form-control" step="0.01" required="required"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="date">Revenue Date *</label>
+                                        <input type="date" name="date" id="date" class="form-control" required="required" t-att-value="datetime.date.today()"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cashbox_id">Cashbox *</label>
+                                        <select name="cashbox_id" id="cashbox_id" class="form-control" required="required">
+                                            <option value="">Select cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="revenue_account_id">Revenue Account *</label>
+                                        <select name="revenue_account_id" id="revenue_account_id" class="form-control" required="required">
+                                            <option value="">Select revenue account</option>
+                                            <t t-foreach="revenue_accounts" t-as="account">
+                                                <option t-att-value="account.id"><t t-esc="account.code"/> - <t t-esc="account.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success">Create Revenue</button>
+                                    <a href="/cashbox/uninvoiced" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Transfers Template -->
+    <template id="portal_cashbox_transfers" name="Cashbox Transfers">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Cashbox Transfers</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Cashbox Transfers</h2>
+                            <a href="/cashbox/transfer/new" class="btn btn-primary">New Transfer</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <t t-if="transfers">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>From Cashbox</th>
+                                            <th>To Cashbox</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="transfers" t-as="transfer">
+                                            <tr>
+                                                <td><t t-esc="transfer.name"/></td>
+                                                <td><t t-esc="transfer.source_cashbox_id.name"/></td>
+                                                <td><t t-esc="transfer.destination_cashbox_id.name"/></td>
+                                                <td><t t-esc="transfer.amount"/> <t t-esc="transfer.currency_id.name"/></td>
+                                                <td><t t-esc="transfer.date"/></td>
+                                                <td>
+                                                    <span t-if="transfer.state == 'draft'" class="badge badge-secondary">Draft</span>
+                                                    <span t-if="transfer.state == 'submitted'" class="badge badge-warning">Submitted</span>
+                                                    <span t-if="transfer.state == 'approved'" class="badge badge-success">Approved</span>
+                                                    <span t-if="transfer.state == 'rejected'" class="badge badge-danger">Rejected</span>
+                                                </td>
+                                                <td>
+                                                    <a t-attf-href="/cashbox/transfer/{{transfer.id}}" class="btn btn-sm btn-info">View</a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info text-center">
+                                <h4>Create your first cashbox transfer</h4>
+                                <p>Transfer money between different cashboxes</p>
+                                <a href="/cashbox/transfer/new" class="btn btn-primary">New Transfer</a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Transfer Form Template -->
+    <template id="portal_cashbox_transfer_form" name="Transfer Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Transfer</t>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Create New Transfer</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form action="/cashbox/transfer/create" method="post" enctype="multipart/form-data">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="source_cashbox_id">From Cashbox *</label>
+                                        <select name="source_cashbox_id" id="source_cashbox_id" class="form-control" required="required">
+                                            <option value="">Select source cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="destination_cashbox_id">To Cashbox *</label>
+                                        <select name="destination_cashbox_id" id="destination_cashbox_id" class="form-control" required="required">
+                                            <option value="">Select destination cashbox</option>
+                                            <t t-foreach="cashboxes" t-as="cashbox">
+                                                <option t-att-value="cashbox.id"><t t-esc="cashbox.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Transfer Amount *</label>
+                                        <input type="number" name="amount" id="amount" class="form-control" step="0.01" required="required"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="date">Transfer Date *</label>
+                                        <input type="date" name="date" id="date" class="form-control" required="required" t-att-value="datetime.date.today()"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Create Transfer</button>
+                                    <a href="/cashbox/transfers" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Error Template -->
+    <template id="portal_cashbox_error" name="Cashbox Error">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            <h4>Error</h4>
+                            <p t-esc="error_message"/>
+                        </div>
+                        <a href="/cashbox" class="btn btn-primary">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,7 @@
+
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_driver_trip_user,driver.trip.user,model_driver_trip,group_driver_portal_user,1,1,0,0
+access_driver_trip_manager,driver.trip.manager,model_driver_trip,group_driver_portal_manager,1,1,1,1
+access_driver_document_user,driver.document.user,model_driver_document,group_driver_portal_user,1,1,1,1
+access_driver_document_manager,driver.document.manager,model_driver_document,group_driver_portal_manager,1,1,1,1
+

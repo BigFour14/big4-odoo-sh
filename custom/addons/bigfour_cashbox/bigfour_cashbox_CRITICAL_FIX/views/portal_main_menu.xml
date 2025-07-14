@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Cashbox Operations to Portal Home -->
+    <template id="portal_my_home_cashbox" name="Portal My Home : Cashbox Operations" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Cashbox Operations</t>
+                <t t-set="url" t-value="'/cashbox'"/>
+                <t t-set="placeholder_count" t-value="'0'"/>
+                <t t-set="text">Manage cashbox payments, collections, expenses and transfers</t>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Add Cashbox Operations to Portal Menu -->
+    <template id="portal_my_home_menu_cashbox" name="Portal layout : cashbox menu entries" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'cashbox'" t-attf-class="breadcrumb-item #{'active ' if not cashbox else ''}">
+                <a t-if="cashbox" t-attf-href="/cashbox?{{ keep_query() }}">Cashbox Operations</a>
+                <t t-else="">Cashbox Operations</t>
+            </li>
+            <li t-if="cashbox" class="breadcrumb-item active">
+                <t t-esc="cashbox"/>
+            </li>
+        </xpath>
+    </template>
+</odoo>
+

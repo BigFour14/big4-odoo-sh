@@ -1,0 +1,103 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_driver_trip_tree" model="ir.ui.view">
+            <field name="name">driver.trip.tree</field>
+            <field name="model">driver.trip</field>
+            <field name="arch" type="xml">
+                <tree string="Driver Trips">
+                    <field name="name"/>
+                    <field name="driver_id"/>
+                    <field name="vehicle_id"/>
+                    <field name="scheduled_datetime"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_driver_trip_form" model="ir.ui.view">
+            <field name="name">driver.trip.form</field>
+            <field name="model">driver.trip</field>
+            <field name="arch" type="xml">
+                <form string="Driver Trip">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="driver_id"/>
+                            <field name="vehicle_id"/>
+                            <field name="start_location"/>
+                            <field name="end_location"/>
+                            <field name="scheduled_datetime"/>
+                            <field name="actual_start_datetime"/>
+                            <field name="actual_end_datetime"/>
+                            <field name="status"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_driver_trip" model="ir.actions.act_window">
+            <field name="name">Driver Trips</field>
+            <field name="res_model">driver.trip</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_driver_portal" name="Driver Portal" sequence="10"/>
+        <menuitem id="menu_driver_trip" name="Driver Trips" parent="menu_driver_portal" action="action_driver_trip" sequence="10"/>
+    </data>
+</odoo>
+
+
+
+        <!-- Enhanced Form View with Action Buttons -->
+        <record id="view_driver_trip_form_enhanced" model="ir.ui.view">
+            <field name="name">driver.trip.form.enhanced</field>
+            <field name="model">driver.trip</field>
+            <field name="arch" type="xml">
+                <form string="Driver Trip">
+                    <header>
+                        <button name="action_start_trip" type="object" string="Start Trip" 
+                                class="oe_highlight" attrs="{'invisible': [('status', '!=', 'pending')]}"/>
+                        <button name="action_complete_trip" type="object" string="Complete Trip" 
+                                class="oe_highlight" attrs="{'invisible': [('status', '!=', 'in_progress')]}"/>
+                        <button name="action_cancel_trip" type="object" string="Cancel Trip" 
+                                attrs="{'invisible': [('status', 'in', ['completed', 'cancelled'])]}"/>
+                        <field name="status" widget="statusbar" statusbar_visible="pending,in_progress,completed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="driver_id"/>
+                                <field name="vehicle_id"/>
+                                <field name="start_location"/>
+                                <field name="end_location"/>
+                            </group>
+                            <group>
+                                <field name="scheduled_datetime"/>
+                                <field name="actual_start_datetime"/>
+                                <field name="actual_end_datetime"/>
+                                <field name="duration" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+

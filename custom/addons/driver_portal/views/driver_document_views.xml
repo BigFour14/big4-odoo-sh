@@ -1,0 +1,110 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_driver_document_tree" model="ir.ui.view">
+            <field name="name">driver.document.tree</field>
+            <field name="model">driver.document</field>
+            <field name="arch" type="xml">
+                <tree string="Driver Documents">
+                    <field name="name"/>
+                    <field name="driver_id"/>
+                    <field name="document_type"/>
+                    <field name="expiration_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_driver_document_form" model="ir.ui.view">
+            <field name="name">driver.document.form</field>
+            <field name="model">driver.document</field>
+            <field name="arch" type="xml">
+                <form string="Driver Document">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="driver_id"/>
+                            <field name="document_type"/>
+                            <field name="attachment" filename="name"/>
+                            <field name="expiration_date"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_driver_document" model="ir.actions.act_window">
+            <field name="name">Driver Documents</field>
+            <field name="res_model">driver.document</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_driver_document" name="Driver Documents" parent="menu_driver_portal" action="action_driver_document" sequence="20"/>
+    </data>
+</odoo>
+
+
+
+        <!-- Enhanced Tree View -->
+        <record id="view_driver_document_tree_enhanced" model="ir.ui.view">
+            <field name="name">driver.document.tree.enhanced</field>
+            <field name="model">driver.document</field>
+            <field name="arch" type="xml">
+                <tree string="Driver Documents" decoration-danger="is_expired" decoration-warning="days_to_expiry &lt; 30">
+                    <field name="name"/>
+                    <field name="driver_id"/>
+                    <field name="document_type"/>
+                    <field name="expiration_date"/>
+                    <field name="days_to_expiry"/>
+                    <field name="is_expired" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Enhanced Form View -->
+        <record id="view_driver_document_form_enhanced" model="ir.ui.view">
+            <field name="name">driver.document.form.enhanced</field>
+            <field name="model">driver.document</field>
+            <field name="arch" type="xml">
+                <form string="Driver Document">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" 
+                                    attrs="{'invisible': [('is_expired', '=', False)]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Expired</span>
+                                </div>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="driver_id"/>
+                                <field name="document_type"/>
+                                <field name="attachment" filename="name"/>
+                            </group>
+                            <group>
+                                <field name="expiration_date"/>
+                                <field name="days_to_expiry" readonly="1"/>
+                                <field name="is_expired" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+

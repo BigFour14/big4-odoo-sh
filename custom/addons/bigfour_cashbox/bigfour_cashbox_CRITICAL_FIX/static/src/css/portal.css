@@ -1,0 +1,146 @@
+/* BigFour Cashbox Portal CSS */
+
+.cashbox-portal {
+    padding: 20px 0;
+}
+
+.cashbox-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.cashbox-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.cashbox-stats {
+    text-align: center;
+    padding: 15px;
+}
+
+.cashbox-stats h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.cashbox-stats p {
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+.cashbox-stats small {
+    font-size: 0.875rem;
+}
+
+.cashbox-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cashbox-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.cashbox-form label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.cashbox-receipt-image {
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.cashbox-status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.cashbox-status-draft {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.cashbox-status-submitted {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.cashbox-status-approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.cashbox-status-paid {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.cashbox-status-collected {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.cashbox-status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.cashbox-status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.cashbox-action-buttons {
+    margin-top: 20px;
+}
+
+.cashbox-action-buttons .btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.cashbox-table {
+    margin-top: 20px;
+}
+
+.cashbox-table th {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.cashbox-breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.cashbox-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+}
+
+@media (max-width: 768px) {
+    .cashbox-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+    
+    .cashbox-stats h3 {
+        font-size: 2rem;
+    }
+    
+    .cashbox-action-buttons .btn {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+

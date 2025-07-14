@@ -1,0 +1,68 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Trip Report Template -->
+        <template id="report_driver_trip_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Driver Trip Report</h2>
+                            <div class="row mt32 mb32">
+                                <div class="col-6">
+                                    <strong>Trip Name:</strong> <span t-field="o.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Driver:</strong> <span t-field="o.driver_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row mb32">
+                                <div class="col-6">
+                                    <strong>Vehicle:</strong> <span t-field="o.vehicle_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Status:</strong> <span t-field="o.status"/>
+                                </div>
+                            </div>
+                            <div class="row mb32">
+                                <div class="col-6">
+                                    <strong>Start Location:</strong> <span t-field="o.start_location"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>End Location:</strong> <span t-field="o.end_location"/>
+                                </div>
+                            </div>
+                            <div class="row mb32">
+                                <div class="col-6">
+                                    <strong>Scheduled Time:</strong> <span t-field="o.scheduled_datetime"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Duration:</strong> <span t-field="o.duration"/> hours
+                                </div>
+                            </div>
+                            <div class="row mb32" t-if="o.notes">
+                                <div class="col-12">
+                                    <strong>Notes:</strong>
+                                    <p t-field="o.notes"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Trip Report Action -->
+        <record id="action_report_driver_trip" model="ir.actions.report">
+            <field name="name">Driver Trip Report</field>
+            <field name="model">driver.trip</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">driver_portal.report_driver_trip_document</field>
+            <field name="report_file">driver_portal.report_driver_trip_document</field>
+            <field name="binding_model_id" ref="model_driver_trip"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
+

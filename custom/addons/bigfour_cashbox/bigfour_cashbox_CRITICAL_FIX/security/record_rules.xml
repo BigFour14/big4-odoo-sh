@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rules for Portal Users -->
+    
+    <!-- Cashier Expense Rules -->
+    <record id="cashier_expense_user_rule" model="ir.rule">
+        <field name="name">Cashier Expense: Portal users can only see their own records</field>
+        <field name="model_id" ref="model_cashier_expense"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="cashier_expense_manager_rule" model="ir.rule">
+        <field name="name">Cashier Expense: Managers can see all records</field>
+        <field name="model_id" ref="model_cashier_expense"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Cashbox Payment Rules -->
+    <record id="cashbox_payment_user_rule" model="ir.rule">
+        <field name="name">Cashbox Payment: Portal users can only see their own records</field>
+        <field name="model_id" ref="model_cashbox_payment"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="cashbox_payment_manager_rule" model="ir.rule">
+        <field name="name">Cashbox Payment: Managers can see all records</field>
+        <field name="model_id" ref="model_cashbox_payment"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Cashbox Collection Rules -->
+    <record id="cashbox_collection_user_rule" model="ir.rule">
+        <field name="name">Cashbox Collection: Portal users can only see their own records</field>
+        <field name="model_id" ref="model_cashbox_collection"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="cashbox_collection_manager_rule" model="ir.rule">
+        <field name="name">Cashbox Collection: Managers can see all records</field>
+        <field name="model_id" ref="model_cashbox_collection"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Cashbox Uninvoiced Rules -->
+    <record id="cashbox_uninvoiced_user_rule" model="ir.rule">
+        <field name="name">Cashbox Uninvoiced: Portal users can only see their own records</field>
+        <field name="model_id" ref="model_cashbox_uninvoiced"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="cashbox_uninvoiced_manager_rule" model="ir.rule">
+        <field name="name">Cashbox Uninvoiced: Managers can see all records</field>
+        <field name="model_id" ref="model_cashbox_uninvoiced"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Cashbox Transfer Rules -->
+    <record id="cashbox_transfer_user_rule" model="ir.rule">
+        <field name="name">Cashbox Transfer: Portal users can only see their own records</field>
+        <field name="model_id" ref="model_cashbox_transfer"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="cashbox_transfer_manager_rule" model="ir.rule">
+        <field name="name">Cashbox Transfer: Managers can see all records</field>
+        <field name="model_id" ref="model_cashbox_transfer"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_cashier_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>
+

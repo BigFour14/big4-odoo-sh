@@ -1,0 +1,52 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo Driver Trips -->
+        <record id="demo_trip_1" model="driver.trip">
+            <field name="name">Delivery to Downtown</field>
+            <field name="driver_id" ref="base.user_admin"/>
+            <field name="start_location">Warehouse A</field>
+            <field name="end_location">Downtown Office</field>
+            <field name="scheduled_datetime" eval="(DateTime.now() + timedelta(hours=2))"/>
+            <field name="status">pending</field>
+            <field name="notes">Urgent delivery required</field>
+        </record>
+
+        <record id="demo_trip_2" model="driver.trip">
+            <field name="name">Client Visit - ABC Corp</field>
+            <field name="driver_id" ref="base.user_admin"/>
+            <field name="start_location">Main Office</field>
+            <field name="end_location">ABC Corp Building</field>
+            <field name="scheduled_datetime" eval="(DateTime.now() + timedelta(days=1))"/>
+            <field name="status">pending</field>
+            <field name="notes">Meeting with client at 2 PM</field>
+        </record>
+
+        <!-- Demo Driver Documents -->
+        <record id="demo_document_1" model="driver.document">
+            <field name="name">Driving License</field>
+            <field name="driver_id" ref="base.user_admin"/>
+            <field name="document_type">license</field>
+            <field name="expiration_date" eval="(DateTime.now() + timedelta(days=365))"/>
+            <field name="notes">Valid driving license</field>
+        </record>
+
+        <record id="demo_document_2" model="driver.document">
+            <field name="name">ID Card</field>
+            <field name="driver_id" ref="base.user_admin"/>
+            <field name="document_type">id_card</field>
+            <field name="expiration_date" eval="(DateTime.now() + timedelta(days=1095))"/>
+            <field name="notes">National ID card</field>
+        </record>
+
+        <record id="demo_document_3" model="driver.document">
+            <field name="name">Vehicle Insurance</field>
+            <field name="driver_id" ref="base.user_admin"/>
+            <field name="document_type">insurance</field>
+            <field name="expiration_date" eval="(DateTime.now() + timedelta(days=30))"/>
+            <field name="notes">Vehicle insurance expiring soon</field>
+        </record>
+    </data>
+</odoo>
+

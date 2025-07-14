@@ -1,0 +1,9 @@
+# This file represents the module icon
+# In a real implementation, this would be a PNG image file
+# For this demo, we're creating a text placeholder
+
+Module Icon: BigFour Cashbox Portal
+Size: 128x128 pixels
+Format: PNG
+Description: Icon representing cashbox and money management
+

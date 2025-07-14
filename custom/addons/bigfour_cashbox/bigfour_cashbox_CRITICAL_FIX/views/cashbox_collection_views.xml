@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="cashbox_collection_list_view" model="ir.ui.view">
+        <field name="name">cashbox.collection.list</field>
+        <field name="model">cashbox.collection</field>
+        <field name="arch" type="xml">
+            <list string="Customer Collections" create="true" delete="true">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="invoice_id"/>
+                <field name="amount"/>
+                <field name="date"/>
+                <field name="cashbox_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'collected'" 
+                       decoration-warning="state == 'submitted'" decoration-info="state == 'draft'" 
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="cashbox_collection_form_view" model="ir.ui.view">
+        <field name="name">cashbox.collection.form</field>
+        <field name="model">cashbox.collection</field>
+        <field name="arch" type="xml">
+            <form string="Customer Collection">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" 
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_collect" string="Collect" type="object" 
+                            class="btn-primary" invisible="state != 'submitted'" 
+                            groups="bigfour_cashbox.group_cashier_manager"/>
+                    <button name="action_cancel" string="Cancel" type="object" 
+                            class="btn-secondary" invisible="state in ['collected', 'cancelled']"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" 
+                            class="btn-secondary" invisible="state not in ['cancelled']"/>
+                    <button name="action_print_receipt" string="Print Receipt" type="object" 
+                            class="btn-secondary" invisible="state != 'collected'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,collected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="invoice_id"/>
+                            <field name="amount"/>
+                            <field name="currency_id"/>
+                            <field name="date"/>
+                            <field name="cashbox_id"/>
+                        </group>
+                        <group>
+                            <field name="remaining_amount" readonly="1" invisible="not invoice_id"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="collected_by" readonly="1" invisible="state != 'collected'"/>
+                            <field name="collected_date" readonly="1" invisible="state != 'collected'"/>
+                            <field name="receipt_image" widget="image"/>
+                            <field name="receipt_filename" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="cashbox_collection_search_view" model="ir.ui.view">
+        <field name="name">cashbox.collection.search</field>
+        <field name="model">cashbox.collection</field>
+        <field name="arch" type="xml">
+            <search string="Search Collections">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="invoice_id"/>
+                <field name="amount"/>
+                <field name="date"/>
+                <field name="cashbox_id"/>
+                <field name="state"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Collected" name="collected" domain="[('state', '=', 'collected')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Customer" name="group_customer" context="{'group_by': 'customer_id'}"/>
+                    <filter string="Cashbox" name="group_cashbox" context="{'group_by': 'cashbox_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="cashbox_collection_action" model="ir.actions.act_window">
+        <field name="name">Customer Collections</field>
+        <field name="res_model">cashbox.collection</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="cashbox_collection_list_view"/>
+        <field name="search_view_id" ref="cashbox_collection_search_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first customer collection
+            </p>
+            <p>
+                Collect customer invoice payments to the cashbox
+            </p>
+        </field>
+    </record>
+</odoo>
+

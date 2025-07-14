@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="cashbox_root_menu" name="Cashbox Portal" sequence="5"/>
+
+    <!-- Operations Menu -->
+    <menuitem id="cashbox_operations_menu" name="Operations" 
+              parent="cashbox_root_menu" sequence="10"/>
+
+    <!-- Sub Menus -->
+    <menuitem id="cashbox_payment_menu" name="Vendor Payments" 
+              parent="cashbox_operations_menu" action="cashbox_payment_action" 
+              sequence="10"/>
+
+    <menuitem id="cashbox_collection_menu" name="Customer Collections" 
+              parent="cashbox_operations_menu" action="cashbox_collection_action" 
+              sequence="20"/>
+
+    <menuitem id="cashier_expense_menu" name="Expenses" 
+              parent="cashbox_operations_menu" action="cashier_expense_action" 
+              sequence="30"/>
+
+    <menuitem id="cashbox_uninvoiced_menu" name="Uninvoiced Collections" 
+              parent="cashbox_operations_menu" action="cashbox_uninvoiced_action" 
+              sequence="40"/>
+
+    <menuitem id="cashbox_transfer_menu" name="Transfers" 
+              parent="cashbox_operations_menu" action="cashbox_transfer_action" 
+              sequence="50"/>
+</odoo>
+

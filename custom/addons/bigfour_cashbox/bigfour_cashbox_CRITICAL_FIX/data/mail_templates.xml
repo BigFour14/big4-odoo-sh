@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email Template for Expense Approval -->
+    <record id="email_template_expense_approval" model="mail.template">
+        <field name="name">Cashier Expense - Approval Required</field>
+        <field name="model_id" ref="model_cashier_expense"/>
+        <field name="subject">Expense Approval Required: ${object.name}</field>
+        <field name="email_to">${object.company_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Dear Manager,</p>
+                <p>A new expense has been submitted for approval:</p>
+                <ul>
+                    <li><strong>Reference:</strong> ${object.name}</li>
+                    <li><strong>Expense Name:</strong> ${object.expense_name}</li>
+                    <li><strong>Amount:</strong> ${object.amount} ${object.currency_id.name}</li>
+                    <li><strong>Date:</strong> ${object.date}</li>
+                    <li><strong>Submitted by:</strong> ${object.user_id.name}</li>
+                </ul>
+                <p>Please review and approve this expense in the system.</p>
+                <p>Best regards,<br/>Cashbox System</p>
+            </div>
+        </field>
+    </record>
+
+    <!-- Email Template for Payment Approval -->
+    <record id="email_template_payment_approval" model="mail.template">
+        <field name="name">Cashbox Payment - Approval Required</field>
+        <field name="model_id" ref="model_cashbox_payment"/>
+        <field name="subject">Payment Approval Required: ${object.name}</field>
+        <field name="email_to">${object.company_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Dear Manager,</p>
+                <p>A new vendor payment has been submitted for approval:</p>
+                <ul>
+                    <li><strong>Reference:</strong> ${object.name}</li>
+                    <li><strong>Vendor:</strong> ${object.vendor_id.name}</li>
+                    <li><strong>Amount:</strong> ${object.amount} ${object.currency_id.name}</li>
+                    <li><strong>Date:</strong> ${object.date}</li>
+                    <li><strong>Submitted by:</strong> ${object.user_id.name}</li>
+                </ul>
+                <p>Please review and approve this payment in the system.</p>
+                <p>Best regards,<br/>Cashbox System</p>
+            </div>
+        </field>
+    </record>
+
+    <!-- Email Template for Collection Approval -->
+    <record id="email_template_collection_approval" model="mail.template">
+        <field name="name">Cashbox Collection - Approval Required</field>
+        <field name="model_id" ref="model_cashbox_collection"/>
+        <field name="subject">Collection Approval Required: ${object.name}</field>
+        <field name="email_to">${object.company_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Dear Manager,</p>
+                <p>A new customer collection has been submitted for approval:</p>
+                <ul>
+                    <li><strong>Reference:</strong> ${object.name}</li>
+                    <li><strong>Customer:</strong> ${object.customer_id.name}</li>
+                    <li><strong>Amount:</strong> ${object.amount} ${object.currency_id.name}</li>
+                    <li><strong>Date:</strong> ${object.date}</li>
+                    <li><strong>Submitted by:</strong> ${object.user_id.name}</li>
+                </ul>
+                <p>Please review and approve this collection in the system.</p>
+                <p>Best regards,<br/>Cashbox System</p>
+            </div>
+        </field>
+    </record>
+</odoo>
+

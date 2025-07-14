@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cashier_expense_user,cashier.expense.user,model_cashier_expense,group_cashier_user,1,1,1,1
+access_cashbox_payment_user,cashbox.payment.user,model_cashbox_payment,group_cashier_user,1,1,1,1
+access_cashbox_collection_user,cashbox.collection.user,model_cashbox_collection,group_cashier_user,1,1,1,1
+access_cashbox_uninvoiced_user,cashbox.uninvoiced.user,model_cashbox_uninvoiced,group_cashier_user,1,1,1,1
+access_cashbox_transfer_user,cashbox.transfer.user,model_cashbox_transfer,group_cashier_user,1,1,1,1
+access_cashier_expense_manager,cashier.expense.manager,model_cashier_expense,group_cashier_manager,1,1,1,1
+access_cashbox_payment_manager,cashbox.payment.manager,model_cashbox_payment,group_cashier_manager,1,1,1,1
+access_cashbox_collection_manager,cashbox.collection.manager,model_cashbox_collection,group_cashier_manager,1,1,1,1
+access_cashbox_uninvoiced_manager,cashbox.uninvoiced.manager,model_cashbox_uninvoiced,group_cashier_manager,1,1,1,1
+access_cashbox_transfer_manager,cashbox.transfer.manager,model_cashbox_transfer,group_cashier_manager,1,1,1,1
+

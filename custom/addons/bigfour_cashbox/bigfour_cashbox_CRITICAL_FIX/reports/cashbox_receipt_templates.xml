@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Expense Receipt Report -->
+    <record id="action_report_cashier_expense_receipt" model="ir.actions.report">
+        <field name="name">Expense Receipt</field>
+        <field name="model">cashier.expense</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bigfour_cashbox.report_cashier_expense_receipt</field>
+        <field name="report_file">bigfour_cashbox.report_cashier_expense_receipt</field>
+        <field name="binding_model_id" ref="model_cashier_expense"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cashier_expense_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Expense Receipt</h2>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Reference:</strong> <span t-field="o.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Expense Name:</strong> <span t-field="o.expense_name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Amount:</strong> <span t-field="o.amount"/> <span t-field="o.currency_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Cashbox:</strong> <span t-field="o.cashbox_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+                        <div class="row mt16" t-if="o.description">
+                            <div class="col-12">
+                                <strong>Description:</strong><br/>
+                                <span t-field="o.description"/>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Created by:</strong> <span t-field="o.user_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.approved_by">
+                                <strong>Approved by:</strong> <span t-field="o.approved_by.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Payment Receipt Report -->
+    <record id="action_report_cashbox_payment_receipt" model="ir.actions.report">
+        <field name="name">Payment Receipt</field>
+        <field name="model">cashbox.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bigfour_cashbox.report_cashbox_payment_receipt</field>
+        <field name="report_file">bigfour_cashbox.report_cashbox_payment_receipt</field>
+        <field name="binding_model_id" ref="model_cashbox_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cashbox_payment_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Payment Receipt</h2>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Reference:</strong> <span t-field="o.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Vendor:</strong> <span t-field="o.vendor_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Amount:</strong> <span t-field="o.amount"/> <span t-field="o.currency_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Cashbox:</strong> <span t-field="o.cashbox_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+                        <div class="row" t-if="o.bill_id">
+                            <div class="col-12">
+                                <strong>Bill Reference:</strong> <span t-field="o.bill_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mt16" t-if="o.description">
+                            <div class="col-12">
+                                <strong>Notes:</strong><br/>
+                                <span t-field="o.description"/>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Created by:</strong> <span t-field="o.user_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.paid_by">
+                                <strong>Paid by:</strong> <span t-field="o.paid_by.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Collection Receipt Report -->
+    <record id="action_report_cashbox_collection_receipt" model="ir.actions.report">
+        <field name="name">Collection Receipt</field>
+        <field name="model">cashbox.collection</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bigfour_cashbox.report_cashbox_collection_receipt</field>
+        <field name="report_file">bigfour_cashbox.report_cashbox_collection_receipt</field>
+        <field name="binding_model_id" ref="model_cashbox_collection"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cashbox_collection_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Collection Receipt</h2>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Reference:</strong> <span t-field="o.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Customer:</strong> <span t-field="o.customer_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Amount:</strong> <span t-field="o.amount"/> <span t-field="o.currency_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Cashbox:</strong> <span t-field="o.cashbox_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+                        <div class="row" t-if="o.invoice_id">
+                            <div class="col-12">
+                                <strong>Invoice Reference:</strong> <span t-field="o.invoice_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mt16" t-if="o.description">
+                            <div class="col-12">
+                                <strong>Notes:</strong><br/>
+                                <span t-field="o.description"/>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Created by:</strong> <span t-field="o.user_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.collected_by">
+                                <strong>Collected by:</strong> <span t-field="o.collected_by.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Transfer Receipt Report -->
+    <record id="action_report_cashbox_transfer_receipt" model="ir.actions.report">
+        <field name="name">Transfer Receipt</field>
+        <field name="model">cashbox.transfer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bigfour_cashbox.report_cashbox_transfer_receipt</field>
+        <field name="report_file">bigfour_cashbox.report_cashbox_transfer_receipt</field>
+        <field name="binding_model_id" ref="model_cashbox_transfer"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cashbox_transfer_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Transfer Receipt</h2>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Reference:</strong> <span t-field="o.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>From:</strong> <span t-field="o.source_cashbox_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>To:</strong> <span t-field="o.destination_cashbox_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Amount:</strong> <span t-field="o.amount"/> <span t-field="o.currency_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+                        <div class="row mt16" t-if="o.description">
+                            <div class="col-12">
+                                <strong>Notes:</strong><br/>
+                                <span t-field="o.description"/>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Created by:</strong> <span t-field="o.user_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.approved_by">
+                                <strong>Approved by:</strong> <span t-field="o.approved_by.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Uninvoiced Receipt Report -->
+    <record id="action_report_cashbox_uninvoiced_receipt" model="ir.actions.report">
+        <field name="name">Uninvoiced Collection Receipt</field>
+        <field name="model">cashbox.uninvoiced</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bigfour_cashbox.report_cashbox_uninvoiced_receipt</field>
+        <field name="report_file">bigfour_cashbox.report_cashbox_uninvoiced_receipt</field>
+        <field name="binding_model_id" ref="model_cashbox_uninvoiced"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cashbox_uninvoiced_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Revenue Collection Receipt</h2>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Reference:</strong> <span t-field="o.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong> <span t-field="o.date"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Revenue Description:</strong> <span t-field="o.revenue_name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Amount:</strong> <span t-field="o.amount"/> <span t-field="o.currency_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Cashbox:</strong> <span t-field="o.cashbox_id.name"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="o.state"/>
+                            </div>
+                        </div>
+                        <div class="row" t-if="o.customer_id">
+                            <div class="col-12">
+                                <strong>Customer:</strong> <span t-field="o.customer_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mt16" t-if="o.description">
+                            <div class="col-12">
+                                <strong>Notes:</strong><br/>
+                                <span t-field="o.description"/>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Created by:</strong> <span t-field="o.user_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.approved_by">
+                                <strong>Approved by:</strong> <span t-field="o.approved_by.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

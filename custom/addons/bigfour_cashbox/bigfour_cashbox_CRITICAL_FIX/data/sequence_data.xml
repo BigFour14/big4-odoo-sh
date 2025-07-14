@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence for Cashier Expense -->
+    <record id="seq_cashier_expense" model="ir.sequence">
+        <field name="name">Cashier Expense Sequence</field>
+        <field name="code">cashier.expense</field>
+        <field name="prefix">EXP/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for Cashbox Payment -->
+    <record id="seq_cashbox_payment" model="ir.sequence">
+        <field name="name">Cashbox Payment Sequence</field>
+        <field name="code">cashbox.payment</field>
+        <field name="prefix">PAY/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for Cashbox Collection -->
+    <record id="seq_cashbox_collection" model="ir.sequence">
+        <field name="name">Cashbox Collection Sequence</field>
+        <field name="code">cashbox.collection</field>
+        <field name="prefix">COL/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for Cashbox Uninvoiced -->
+    <record id="seq_cashbox_uninvoiced" model="ir.sequence">
+        <field name="name">Cashbox Uninvoiced Sequence</field>
+        <field name="code">cashbox.uninvoiced</field>
+        <field name="prefix">UNI/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for Cashbox Transfer -->
+    <record id="seq_cashbox_transfer" model="ir.sequence">
+        <field name="name">Cashbox Transfer Sequence</field>
+        <field name="code">cashbox.transfer</field>
+        <field name="prefix">TRF/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>
+
